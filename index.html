@@ -1,0 +1,1184 @@
+html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- Page title -->
+    <title>Food Ordering App</title>
+
+    <!-- Makes the page responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <!-- =====================================================
+         CSS
+         All CSS is inside this file
+         ===================================================== -->
+
+    <style>
+
+        /* Remove default browser spacing */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Basic body design */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+
+        /* =====================================================
+           LOGIN PAGE
+           ===================================================== */
+
+        .login-page {
+            height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background-color: #ff6b35;
+        }
+
+        /* Login box */
+        .login-box {
+            width: 350px;
+
+            background-color: white;
+
+            padding: 30px;
+
+            border-radius: 10px;
+
+            text-align: center;
+        }
+
+        .login-box h1 {
+            margin-bottom: 10px;
+            color: #ff6b35;
+        }
+
+        .login-box p {
+            margin-bottom: 25px;
+            color: #666;
+        }
+
+        /* Input fields */
+        .login-box input {
+            width: 100%;
+
+            padding: 12px;
+
+            margin-bottom: 15px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 5px;
+        }
+
+        /* Login button */
+        .login-box button {
+            width: 100%;
+
+            padding: 12px;
+
+            background-color: #ff6b35;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+            font-size: 16px;
+        }
+
+        .login-box button:hover {
+            background-color: #e85a28;
+        }
+
+        /* Error message */
+        #loginError {
+            color: red;
+            margin-top: 15px;
+            display: none;
+        }
+
+        /* Demo credentials */
+        .demo {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #777;
+        }
+
+
+        /* =====================================================
+           FOOD APP
+           ===================================================== */
+
+        #foodApp {
+            display: none;
+        }
+
+
+        /* =====================================================
+           NAVIGATION BAR
+           ===================================================== */
+
+        .navbar {
+            background-color: white;
+
+            padding: 15px 5%;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            box-shadow: 0 2px 5px #ccc;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #ff6b35;
+        }
+
+        .nav-buttons button {
+            padding: 8px 12px;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+        }
+
+        .cart-button {
+            background-color: #ff6b35;
+            color: white;
+        }
+
+        .logout-button {
+            background-color: #ddd;
+            margin-left: 5px;
+        }
+
+
+        /* =====================================================
+           WELCOME SECTION
+           ===================================================== */
+
+        .welcome {
+            background-color: white;
+
+            padding: 35px 5%;
+
+            margin-bottom: 20px;
+        }
+
+        .welcome h1 {
+            margin-bottom: 10px;
+        }
+
+        .welcome span {
+            color: #ff6b35;
+        }
+
+
+        /* =====================================================
+           SEARCH
+           ===================================================== */
+
+        .search {
+            padding: 0 5% 20px;
+        }
+
+        .search input {
+            width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 5px;
+
+            font-size: 15px;
+        }
+
+
+        /* =====================================================
+           FOOD CARDS
+           ===================================================== */
+
+        .food-container {
+            padding: 0 5% 40px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(220px, 1fr));
+
+            gap: 20px;
+        }
+
+        /* Food card */
+        .food-card {
+            background-color: white;
+
+            border-radius: 8px;
+
+            overflow: hidden;
+
+            box-shadow: 0 2px 8px #ddd;
+        }
+
+        /* Food image */
+        .food-card img {
+            width: 100%;
+
+            height: 160px;
+
+            object-fit: cover;
+        }
+
+        /* Food details */
+        .food-details {
+            padding: 15px;
+        }
+
+        .food-details h3 {
+            margin-bottom: 8px;
+        }
+
+        .food-details p {
+            color: #777;
+
+            font-size: 14px;
+
+            margin-bottom: 12px;
+        }
+
+        /* Price and button */
+        .food-bottom {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+        .price {
+            color: #ff6b35;
+
+            font-weight: bold;
+
+            font-size: 18px;
+        }
+
+        .add-button {
+            background-color: #ff6b35;
+
+            color: white;
+
+            border: none;
+
+            padding: 8px 12px;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           CART
+           ===================================================== */
+
+        .cart {
+            display: none;
+
+            position: fixed;
+
+            top: 0;
+            right: 0;
+
+            width: 350px;
+
+            max-width: 90%;
+
+            height: 100%;
+
+            background-color: white;
+
+            padding: 20px;
+
+            box-shadow: -2px 0 8px #aaa;
+
+            z-index: 10;
+        }
+
+        .cart h2 {
+            margin-bottom: 20px;
+        }
+
+        .close-button {
+            float: right;
+
+            border: none;
+
+            background: none;
+
+            font-size: 22px;
+
+            cursor: pointer;
+        }
+
+        /* Cart item */
+        .cart-item {
+            padding: 12px 0;
+
+            border-bottom: 1px solid #ddd;
+        }
+
+        .cart-item h4 {
+            margin-bottom: 5px;
+        }
+
+        .quantity button {
+            width: 25px;
+            height: 25px;
+
+            border: none;
+
+            cursor: pointer;
+
+            margin: 5px 3px;
+        }
+
+        .cart-total {
+            margin-top: 20px;
+
+            font-size: 20px;
+
+            font-weight: bold;
+        }
+
+        .order-button {
+            width: 100%;
+
+            padding: 12px;
+
+            margin-top: 15px;
+
+            background-color: green;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           MOBILE DESIGN
+           ===================================================== */
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 15px;
+            }
+
+            .welcome {
+                padding: 25px 15px;
+            }
+
+            .search {
+                padding: 0 15px 20px;
+            }
+
+            .food-container {
+                padding: 0 15px 30px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         LOGIN PAGE
+         ===================================================== -->
+
+    <div class="login-page" id="loginPage">
+
+        <div class="login-box">
+
+            <!-- Application name -->
+            <h1>Food Order</h1>
+
+            <p>Admin Login</p>
+
+
+            <!-- Admin ID -->
+            <input
+                type="text"
+                id="adminId"
+                placeholder="Enter Admin ID"
+            >
+
+
+            <!-- Admin password -->
+            <input
+                type="password"
+                id="adminPassword"
+                placeholder="Enter Password"
+            >
+
+
+            <!-- Login button -->
+            <button onclick="login()">
+                Login
+            </button>
+
+
+            <!-- Wrong login message -->
+            <div id="loginError">
+                Invalid ID or Password
+            </div>
+
+
+            <!-- Demo login details -->
+            <div class="demo">
+
+                Demo Login:<br>
+
+                ID: admin<br>
+
+                Password: admin123
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         FOOD ORDERING APPLICATION
+         ===================================================== -->
+
+    <div id="foodApp">
+
+
+        <!-- =================================================
+             NAVBAR
+             ================================================= -->
+
+        <div class="navbar">
+
+            <div class="logo">
+                Food Order
+            </div>
+
+
+            <div class="nav-buttons">
+
+                <!-- Cart button -->
+                <button
+                    class="cart-button"
+                    onclick="openCart()"
+                >
+                    Cart (<span id="cartCount">0</span>)
+                </button>
+
+
+                <!-- Logout button -->
+                <button
+                    class="logout-button"
+                    onclick="logout()"
+                >
+                    Logout
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             WELCOME
+             ================================================= -->
+
+        <div class="welcome">
+
+            <h1>
+                Welcome to <span>Food Order</span>
+            </h1>
+
+            <p>
+                Choose your favourite food and place your order.
+            </p>
+
+        </div>
+
+
+
+        <!-- =================================================
+             SEARCH
+             ================================================= -->
+
+        <div class="search">
+
+            <input
+                type="text"
+                id="searchBox"
+                placeholder="Search food..."
+                onkeyup="searchFood()"
+            >
+
+        </div>
+
+
+
+        <!-- =================================================
+             FOOD ITEMS
+             ================================================= -->
+
+        <div
+            class="food-container"
+            id="foodContainer"
+        >
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         CART
+         ===================================================== -->
+
+    <div class="cart" id="cart">
+
+        <!-- Close cart button -->
+        <button
+            class="close-button"
+            onclick="closeCart()"
+        >
+            X
+        </button>
+
+        <h2>Your Cart</h2>
+
+
+        <!-- Cart items will appear here -->
+        <div id="cartItems"></div>
+
+
+        <!-- Total -->
+        <div class="cart-total">
+
+            Total:
+            ₹<span id="totalPrice">0</span>
+
+        </div>
+
+
+        <!-- Place order -->
+        <button
+            class="order-button"
+            onclick="placeOrder()"
+        >
+            Place Order
+        </button>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+    <script>
+
+
+        /* =====================================================
+           LOGIN DETAILS
+           ===================================================== */
+
+        // Admin username
+        const adminId = "admin";
+
+        // Admin password
+        const adminPassword = "admin123";
+
+
+        /* =====================================================
+           FOOD DATA
+           ===================================================== */
+
+        /*
+            Each food item contains:
+            id          = unique number
+            name        = food name
+            price       = food price
+            image       = food image URL
+            description = short description
+        */
+
+        const foods = [
+
+            {
+                id: 1,
+                name: "Chicken Biryani",
+                price: 220,
+                image: "https://images.unsplash.com/photo-1563379091339-03246963d51a?auto=format&fit=crop&w=600&q=80",
+                description: "Spicy and delicious chicken biryani."
+            },
+
+            {
+                id: 2,
+                name: "Cheese Burger",
+                price: 150,
+                image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80",
+                description: "Juicy burger with cheese and vegetables."
+            },
+
+            {
+                id: 3,
+                name: "Pizza",
+                price: 250,
+                image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=600&q=80",
+                description: "Fresh pizza with cheese and toppings."
+            },
+
+            {
+                id: 4,
+                name: "French Fries",
+                price: 100,
+                image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80",
+                description: "Crispy golden French fries."
+            },
+
+            {
+                id: 5,
+                name: "Pasta",
+                price: 180,
+                image: "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=600&q=80",
+                description: "Creamy and delicious Italian pasta."
+            },
+
+            {
+                id: 6,
+                name: "Dosa",
+                price: 90,
+                image: "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?auto=format&fit=crop&w=600&q=80",
+                description: "Crispy South Indian dosa with chutney."
+            },
+
+            {
+                id: 7,
+                name: "Chocolate Cake",
+                price: 130,
+                image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80",
+                description: "Soft and delicious chocolate cake."
+            },
+
+            {
+                id: 8,
+                name: "Cold Coffee",
+                price: 110,
+                image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=600&q=80",
+                description: "Cold and refreshing coffee."
+            }
+
+        ];
+
+
+        /* =====================================================
+           CART ARRAY
+           ===================================================== */
+
+        // This array stores selected food items.
+        let cart = [];
+
+
+        /* =====================================================
+           LOGIN FUNCTION
+           ===================================================== */
+
+        function login() {
+
+            // Get Admin ID entered by the user
+            let enteredId =
+                document.getElementById("adminId").value;
+
+            // Get password entered by the user
+            let enteredPassword =
+                document.getElementById("adminPassword").value;
+
+
+            // Check login details
+            if (
+                enteredId === adminId &&
+                enteredPassword === adminPassword
+            ) {
+
+                // Hide login page
+                document.getElementById("loginPage")
+                    .style.display = "none";
+
+                // Show food application
+                document.getElementById("foodApp")
+                    .style.display = "block";
+
+                // Display food items
+                displayFoods();
+
+            } else {
+
+                // Show error message
+                document.getElementById("loginError")
+                    .style.display = "block";
+
+            }
+
+        }
+
+
+        /* =====================================================
+           DISPLAY FOOD
+           ===================================================== */
+
+        function displayFoods(foodList = foods) {
+
+            // Get food container
+            let container =
+                document.getElementById("foodContainer");
+
+
+            // Clear old food cards
+            container.innerHTML = "";
+
+
+            // Create a card for every food item
+            foodList.forEach(function(food) {
+
+                container.innerHTML += `
+
+                    <div class="food-card">
+
+                        <img
+                            src="${food.image}"
+                            alt="${food.name}"
+                        >
+
+                        <div class="food-details">
+
+                            <h3>
+                                ${food.name}
+                            </h3>
+
+                            <p>
+                                ${food.description}
+                            </p>
+
+                            <div class="food-bottom">
+
+                                <span class="price">
+                                    ₹${food.price}
+                                </span>
+
+                                <button
+                                    class="add-button"
+                                    onclick="addToCart(${food.id})"
+                                >
+                                    Add
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            });
+
+        }
+
+
+        /* =====================================================
+           ADD TO CART
+           ===================================================== */
+
+        function addToCart(id) {
+
+            // Find selected food
+            let food =
+                foods.find(function(item) {
+
+                    return item.id === id;
+
+                });
+
+
+            // Check if food is already in cart
+            let existingFood =
+                cart.find(function(item) {
+
+                    return item.id === id;
+
+                });
+
+
+            if (existingFood) {
+
+                // Increase quantity
+                existingFood.quantity++;
+
+            } else {
+
+                // Add new food to cart
+                cart.push({
+
+                    id: food.id,
+
+                    name: food.name,
+
+                    price: food.price,
+
+                    quantity: 1
+
+                });
+
+            }
+
+
+            // Update cart
+            updateCart();
+
+
+            // Inform user
+            alert(food.name + " added to cart.");
+
+        }
+
+
+        /* =====================================================
+           UPDATE CART
+           ===================================================== */
+
+        function updateCart() {
+
+            let cartItems =
+                document.getElementById("cartItems");
+
+
+            // Clear cart display
+            cartItems.innerHTML = "";
+
+
+            // Variable for total price
+            let total = 0;
+
+
+            // Variable for total quantity
+            let count = 0;
+
+
+            // Check whether cart is empty
+            if (cart.length === 0) {
+
+                cartItems.innerHTML =
+                    "<p>Your cart is empty.</p>";
+
+            }
+
+
+            // Display every cart item
+            cart.forEach(function(item) {
+
+                // Calculate item total
+                total += item.price * item.quantity;
+
+                // Calculate total quantity
+                count += item.quantity;
+
+
+                cartItems.innerHTML += `
+
+                    <div class="cart-item">
+
+                        <h4>
+                            ${item.name}
+                        </h4>
+
+                        <p>
+                            ₹${item.price}
+                        </p>
+
+                        <div class="quantity">
+
+                            <button
+                                onclick="changeQuantity(
+                                    ${item.id},
+                                    -1
+                                )"
+                            >
+                                -
+                            </button>
+
+                            ${item.quantity}
+
+                            <button
+                                onclick="changeQuantity(
+                                    ${item.id},
+                                    1
+                                )"
+                            >
+                                +
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            });
+
+
+            // Display cart item count
+            document.getElementById("cartCount")
+                .innerText = count;
+
+
+            // Display total price
+            document.getElementById("totalPrice")
+                .innerText = total;
+
+        }
+
+
+        /* =====================================================
+           CHANGE QUANTITY
+           ===================================================== */
+
+        function changeQuantity(id, change) {
+
+            // Find food in cart
+            let item =
+                cart.find(function(food) {
+
+                    return food.id === id;
+
+                });
+
+
+            // Change quantity
+            item.quantity += change;
+
+
+            // Remove item if quantity reaches zero
+            if (item.quantity <= 0) {
+
+                cart =
+                    cart.filter(function(food) {
+
+                        return food.id !== id;
+
+                    });
+
+            }
+
+
+            // Update cart
+            updateCart();
+
+        }
+
+
+        /* =====================================================
+           OPEN CART
+           ===================================================== */
+
+        function openCart() {
+
+            document.getElementById("cart")
+                .style.display = "block";
+
+        }
+
+
+        /* =====================================================
+           CLOSE CART
+           ===================================================== */
+
+        function closeCart() {
+
+            document.getElementById("cart")
+                .style.display = "none";
+
+        }
+
+
+        /* =====================================================
+           SEARCH FOOD
+           ===================================================== */
+
+        function searchFood() {
+
+            // Get search text
+            let searchText =
+                document
+                    .getElementById("searchBox")
+                    .value
+                    .toLowerCase();
+
+
+            // Filter food based on name
+            let filteredFoods =
+                foods.filter(function(food) {
+
+                    return food.name
+                        .toLowerCase()
+                        .includes(searchText);
+
+                });
+
+
+            // Display filtered food
+            displayFoods(filteredFoods);
+
+        }
+
+
+        /* =====================================================
+           PLACE ORDER
+           ===================================================== */
+
+        function placeOrder() {
+
+            // Check if cart is empty
+            if (cart.length === 0) {
+
+                alert(
+                    "Your cart is empty. Please add food first."
+                );
+
+                return;
+
+            }
+
+
+            // Calculate total
+            let total =
+                cart.reduce(function(sum, item) {
+
+                    return sum +
+                        item.price * item.quantity;
+
+                }, 0);
+
+
+            // Generate simple order number
+            let orderNumber =
+                Math.floor(
+                    1000 + Math.random() * 9000
+                );
+
+
+            // Show order confirmation
+            alert(
+                "Order placed successfully!\n\n" +
+                "Order Number: #" + orderNumber +
+                "\nTotal Amount: ₹" + total +
+                "\n\nThank you for ordering!"
+            );
+
+
+            // Empty cart
+            cart = [];
+
+
+            // Update cart
+            updateCart();
+
+
+            // Close cart
+            closeCart();
+
+        }
+
+
+        /* =====================================================
+           LOGOUT
+           ===================================================== */
+
+        function logout() {
+
+            // Ask confirmation
+            let answer =
+                confirm("Do you want to logout?");
+
+
+            if (answer) {
+
+                // Hide food application
+                document.getElementById("foodApp")
+                    .style.display = "none";
+
+
+                // Show login page
+                document.getElementById("loginPage")
+                    .style.display = "flex";
+
+
+                // Clear login fields
+                document.getElementById("adminId")
+                    .value = "";
+
+                document.getElementById("adminPassword")
+                    .value = "";
+
+
+                // Empty cart
+                cart = [];
+
+                // Update cart
+                updateCart();
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>
